@@ -212,6 +212,11 @@ func GetUserByAuthority(w http.ResponseWriter, r *http.Request) {
 				}
 				json.NewEncoder(w).Encode(temp)
 			}
+		default:
+			{
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Fprintf(w, "User authority value can be 0 = admin,1 = merchant,2 = customer,3 = not registered \n else is forbidden")
+			}
 		}
 
 	} else {
