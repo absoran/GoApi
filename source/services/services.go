@@ -15,13 +15,23 @@ import (
 //this function triggers when user send GET method to: //../api
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: HomePage")
-	fmt.Fprintf(w, "Welcome to the API!")
+	if r.Method == "GET" {
+		fmt.Fprintf(w, "Welcome to the API!")
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Used wrong HTTP method !")
+	}
 }
 
 //this function triggers when user send GET method to: //../api/users
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: GetUsers")
-	json.NewEncoder(w).Encode(models.Users)
+	if r.Method == "GET" {
+		fmt.Println("Endpoint Hit: GetUsers")
+		json.NewEncoder(w).Encode(models.Users)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Used wrong HTTP method !")
+	}
 }
 
 //this function triggers when user send POST method with body to: //../api/createnewuser
@@ -57,21 +67,26 @@ func CheckError(err error) {
 //this function triggers when user send GET method with id to: //../api/getuserbyid/id
 func GetUserById(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: GetUserById")
-	tempusr := models.User{ID: -1} // temporary user object with -1 id
-	unparsedurl := strings.Split(r.URL.Path, "/")
-	id, err := strconv.Atoi(unparsedurl[3])
-	CheckError(err)
-	for i := range models.Users {
-		if models.Users[i].ID == id {
-			tempusr = models.Users[i]
-			break
+	if r.Method == "GET" {
+		tempusr := models.User{ID: -1} // temporary user object with -1 id
+		unparsedurl := strings.Split(r.URL.Path, "/")
+		id, err := strconv.Atoi(unparsedurl[3])
+		CheckError(err)
+		for i := range models.Users {
+			if models.Users[i].ID == id {
+				tempusr = models.Users[i]
+				break
+			}
 		}
-	}
-	if tempusr.ID == -1 {
-		w.WriteHeader(http.StatusNoContent)
-		fmt.Fprintf(w, "User does not exist") // if user with requested id does not exist return nocontent status code
+		if tempusr.ID == -1 {
+			w.WriteHeader(http.StatusNoContent)
+			fmt.Fprintf(w, "User does not exist") // if user with requested id does not exist return nocontent status code
+		} else {
+			json.NewEncoder(w).Encode(tempusr)
+		}
 	} else {
-		json.NewEncoder(w).Encode(tempusr)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Used wrong HTTP method !")
 	}
 }
 
