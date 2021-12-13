@@ -25,6 +25,6 @@ var Users = []User{
 	{ID: 3, FirstName: "Batuhan", LastName: "Demircan", Age: 23, Authority: Customer},
 	{ID: 5, FirstName: "Cihan", LastName: "Özhan", Age: 34, Authority: Merchant},
 	{ID: 8, FirstName: "İsim", LastName: "Soyisim", Age: 13, Authority: Customer},
-	{ID: 8, FirstName: "İsim2", LastName: "Soyisim2", Age: 14, Authority: NotRegistered},
-	{ID: 8, FirstName: "İsim3", LastName: "Soyisim3", Age: 19, Authority: NotRegistered},
+	{ID: 9, FirstName: "İsim2", LastName: "Soyisim2", Age: 14, Authority: NotRegistered},
+	{ID: 11, FirstName: "İsim3", LastName: "Soyisim3", Age: 19, Authority: NotRegistered},
 }
